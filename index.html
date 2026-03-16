@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tony Wall | Bespoke AI Tools for Professional Services</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #060612;
+  --bg-card: rgba(15, 15, 35, 0.7);
+  --teal: #00c897;
+  --teal-glow: rgba(0, 200, 151, 0.3);
+  --purple: #7b2ff7;
+  --purple-glow: rgba(123, 47, 247, 0.3);
+  --cyan: #00b4d8;
+  --coral: #e94560;
+  --coral-glow: rgba(233, 69, 96, 0.3);
+  --gold: #ffd166;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(51, 65, 85, 0.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg-deep);font-family:'DM Sans',sans-serif;color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#stars-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.ambient{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:0.08}
+.ambient-1{width:600px;height:600px;background:var(--teal);top:-200px;right:-100px}
+.ambient-2{width:500px;height:500px;background:var(--purple);bottom:20%;left:-200px}
+.container{max-width:860px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:16px 0;background:rgba(6,6,18,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background 0.3s}
+nav .container{display:flex;justify-content:space-between;align-items:center}
+nav .brand{font-family:'Outfit',sans-serif;font-weight:700;font-size:18px;color:var(--text-primary);letter-spacing:-0.5px}
+nav .brand span{color:var(--teal)}
+nav .links{display:flex;gap:28px;list-style:none}
+nav .links a{color:var(--text-secondary);text-decoration:none;font-size:13px;font-weight:500;transition:color 0.2s}
+nav .links a:hover{color:var(--teal)}
+@media(max-width:640px){nav .links{gap:16px} nav .links a{font-size:11px}}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;text-align:center}
+.hero-inner{max-width:700px;margin:0 auto}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;opacity:0;animation:fadeUp 0.6s ease-out 0.2s forwards}
+.hero h1{font-family:'Outfit',sans-serif;font-size:clamp(32px,5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:24px;opacity:0;animation:fadeUp 0.6s ease-out 0.4s forwards}
+.hero h1 .accent{color:var(--teal)}
+.hero h1 .accent-p{color:var(--purple)}
+.hero-desc{font-size:17px;color:var(--text-secondary);line-height:1.75;margin-bottom:32px;max-width:580px;margin-left:auto;margin-right:auto;opacity:0;animation:fadeUp 0.6s ease-out 0.6s forwards}
+.hero-creds{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:36px;opacity:0;animation:fadeUp 0.6s ease-out 0.75s forwards}
+.cred{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:11px;font-weight:500;color:var(--text-muted);background:rgba(30,41,59,0.4);border:1px solid rgba(51,65,85,0.3)}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp 0.6s ease-out 0.9s forwards}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--teal);color:var(--bg-deep);padding:14px 32px;border-radius:50px;font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s;border:none;cursor:pointer}
+.btn-primary:hover{box-shadow:0 0 30px var(--teal-glow);transform:translateY(-2px)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--text-secondary);padding:14px 32px;border-radius:50px;font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid var(--border);transition:all 0.3s}
+.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+
+/* Sections */
+section{padding:90px 0}
+.section-label{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+.section-title{font-family:'Outfit',sans-serif;font-size:clamp(26px,3.2vw,36px);font-weight:700;letter-spacing:-0.5px;margin-bottom:16px}
+.section-desc{font-size:16px;color:var(--text-secondary);line-height:1.7;max-width:600px;margin-bottom:48px}
+
+/* Case cards */
+.case-grid{display:grid;gap:24px}
+.case-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:36px;position:relative;overflow:hidden;transition:all 0.4s;backdrop-filter:blur(10px)}
+.case-card:hover{border-color:rgba(0,200,151,0.25);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+.case-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);opacity:0;transition:opacity 0.4s}
+.case-card:hover::before{opacity:1}
+.case-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.case-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:50px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.badge-live{background:rgba(0,200,151,0.1);border:1px solid rgba(0,200,151,0.3);color:var(--teal)}
+.badge-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:0.4}}
+.badge-proposed{background:rgba(255,209,102,0.1);border:1px solid rgba(255,209,102,0.3);color:var(--gold)}
+.case-client{font-size:12px;color:var(--text-muted);font-weight:500}
+.case-title{font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.3px;margin-bottom:10px}
+.case-desc{font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:20px}
+.case-outcomes{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.outcome{padding:14px;border-radius:12px;background:rgba(30,41,59,0.3);border:1px solid rgba(51,65,85,0.3)}
+.outcome-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:20px;color:var(--teal);line-height:1}
+.outcome-label{font-size:11px;color:var(--text-muted);margin-top:4px}
+.case-what{font-size:14px;color:var(--text-secondary);line-height:1.7}
+
+/* Bespoke section */
+.bespoke-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(10,10,30,0.4)}
+.bespoke-card{padding:48px;border-radius:20px;background:linear-gradient(145deg,rgba(0,200,151,0.03),rgba(123,47,247,0.03));border:1px solid var(--border)}
+.bespoke-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media(max-width:768px){.bespoke-grid{grid-template-columns:1fr;gap:24px}}
+.compare-box{padding:20px;border-radius:14px}
+.compare-old{background:rgba(30,41,59,0.4);border:1px solid rgba(51,65,85,0.3)}
+.compare-new{background:rgba(0,200,151,0.05);border:1px solid rgba(0,200,151,0.2)}
+.compare-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:600}
+.compare-text{font-size:14px;color:var(--text-secondary);line-height:1.65}
+
+/* Background */
+.bg-section{background:rgba(10,10,30,0.5)}
+.bg-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+@media(max-width:768px){.bg-grid{grid-template-columns:1fr;gap:32px}}
+.timeline-item{padding-left:18px;border-left:2px solid rgba(51,65,85,0.5);margin-bottom:18px;position:relative}
+.timeline-item::before{content:'';position:absolute;left:-5px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.timeline-item .role{font-weight:600;font-size:14px}
+.timeline-item .co{font-size:13px;color:var(--teal);font-weight:500}
+.timeline-item .period{font-size:11px;color:var(--text-muted);margin-top:2px}
+.timeline-item .desc{font-size:13px;color:var(--text-secondary);margin-top:3px;line-height:1.5}
+.edu-item{margin-bottom:12px}
+.edu-item .deg{font-weight:600;font-size:14px}
+.edu-item .school{font-size:12px;color:var(--text-muted)}
+
+/* Approach */
+.approach-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border-radius:16px;overflow:hidden}
+@media(max-width:640px){.approach-grid{grid-template-columns:1fr}}
+.approach-item{background:var(--bg-card);padding:32px 24px;position:relative}
+.approach-num{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:rgba(0,200,151,0.1);position:absolute;top:14px;right:16px}
+.approach-item h3{font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;margin-bottom:6px}
+.approach-item p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+
+/* CTA */
+.cta-section{text-align:center;padding:80px 0 120px}
+.cta-card{padding:56px 40px;border-radius:24px;background:linear-gradient(145deg,rgba(0,200,151,0.04),rgba(123,47,247,0.04));border:1px solid var(--border);position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--purple),var(--cyan))}
+.cta-title{font-family:'Outfit',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:700;margin-bottom:16px}
+.cta-desc{font-size:15px;color:var(--text-secondary);line-height:1.7;max-width:500px;margin:0 auto 28px}
+.cta-contact{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:20px}
+.cta-contact-item{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-secondary)}
+.cta-contact-item span{color:var(--teal);font-size:16px}
+
+footer{padding:24px 0;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--text-muted);position:relative;z-index:1}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.reveal{opacity:0;transform:translateY(24px);transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<nav>
+  <div class="container">
+    <div class="brand">tony<span>wall</span></div>
+    <ul class="links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-label">Bespoke AI Tools &amp; Software</div>
+      <h1>Custom software built <span class="accent">around</span> your <span class="accent-p">workflow</span></h1>
+      <p class="hero-desc">Every firm has processes that are too specific for off-the-shelf software to solve well. I build bespoke tools tailored to exactly how your team works. Delivered in weeks, not months.</p>
+      <div class="hero-creds">
+        <div class="cred">8 years Head of Product &amp; Design, Intuit</div>
+        <div class="cred">Ex-Westpac</div>
+        <div class="cred">MBA, University of Sydney</div>
+        <div class="cred">Ex-ASIC (MoneySmart)</div>
+        <div class="cred">AICD Company Directors</div>
+      </div>
+      <div class="hero-cta">
+        <a href="#bespoke" class="btn-primary">Learn More ↓</a>
+        <a href="#contact" class="btn-outline">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bespoke -->
+<section id="bespoke" class="bespoke-section">
+  <div class="container">
+    <div class="bespoke-card reveal">
+      <div class="section-label">Why Bespoke</div>
+      <h2 class="section-title" style="margin-bottom:24px;">Your firm's workflow is unique. Your tools should be too.</h2>
+      <div class="bespoke-grid">
+        <div>
+          <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;margin-bottom:16px;">
+            Generic software forces your team into workarounds. The extra spreadsheet, the manual copy-paste step, the "that's just how we've always done it." Those gaps exist because the software wasn't built for how you actually work.
+          </p>
+          <p style="font-size:15px;color:var(--text-secondary);line-height:1.7;">
+            AI-assisted development has changed the economics. Custom software that used to need a large team and a six-figure budget can now be built by one person who understands your problem, in weeks. That's what makes bespoke tools practical for firms like yours.
+          </p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="compare-box compare-old">
+            <div class="compare-label" style="color:var(--text-muted);">Off-the-shelf</div>
+            <div class="compare-text">You adapt to the software. Configure, compromise, work around the gaps. It does 70% of what you need and you handle the rest manually.</div>
+          </div>
+          <div class="compare-box compare-new">
+            <div class="compare-label" style="color:var(--teal);">Bespoke</div>
+            <div class="compare-text">The software adapts to you. Built around your files, your steps, your compliance rules. It does exactly what you need. Nothing more, nothing less.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Background -->
+<section id="background" class="bg-section">
+  <div class="container">
+    <div class="section-label reveal">Background</div>
+    <h2 class="section-title reveal">I understand both the technology and your industry</h2>
+    <p class="section-desc reveal">Most developers don't understand financial services. Most product leaders don't write code. I've spent my career in both worlds.</p>
+
+    <div class="bg-grid reveal">
+      <div>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:600;margin-bottom:18px;">Career</h3>
+        <div class="timeline-item">
+          <div class="role">AI Product Developer</div>
+          <div class="co">Service Seeking · Nexia Australia</div>
+          <div class="period">2024 – Present</div>
+          <div class="desc">Building bespoke AI tools and workflow automation for professional services and marketplace platforms.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="role">Head of Product & Design, Asia Pacific</div>
+          <div class="co">Intuit (QuickBooks)</div>
+          <div class="period">2016 – 2024 · 8 years</div>
+          <div class="desc">Led product and design for Intuit's accounting and business software across APAC. Built team from 1 to 19. Products reaching 1M+ users.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="role">Lead Product Designer</div>
+          <div class="co">Westpac</div>
+          <div class="period">2014 – 2016</div>
+          <div class="desc">Designed banking products including lending applications and business tools.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="role">Project Manager</div>
+          <div class="co">ASIC (Australian Securities &amp; Investments Commission)</div>
+          <div class="period">2007 – 2012</div>
+          <div class="desc">Conceived and helped build the award-winning MoneySmart.gov.au website, including customer-centred tools like the widely used Superannuation and Retirement Planner.</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:600;margin-bottom:18px;">Education</h3>
+        <div class="edu-item">
+          <div class="deg">Masters in Business Administration</div>
+          <div class="school">University of Sydney · 2024</div>
+        </div>
+        <div class="edu-item">
+          <div class="deg">Australian Company Directors Course</div>
+          <div class="school">AICD · 2024</div>
+        </div>
+        <div class="edu-item">
+          <div class="deg">Banking &amp; Finance</div>
+          <div class="school">Macquarie University · 2009</div>
+        </div>
+        <div class="edu-item">
+          <div class="deg">Design Thinking &amp; Graphic Design</div>
+          <div class="school">UTS · 2013</div>
+        </div>
+        <div class="edu-item">
+          <div class="deg">Bachelor of Arts / Commerce</div>
+          <div class="school">University of Sydney · 2003</div>
+        </div>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:17px;font-weight:600;margin-top:32px;margin-bottom:12px;">Presented at</h3>
+        <p style="font-size:14px;color:var(--text-secondary);">UX Australia · Design Conference</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Approach -->
+<section id="approach">
+  <div class="container">
+    <div class="section-label reveal">How I Work</div>
+    <h2 class="section-title reveal">Built around you</h2>
+    <p class="section-desc reveal">I start by understanding how your team actually works, then build tools that fit that reality.</p>
+    <div class="approach-grid reveal">
+      <div class="approach-item">
+        <span class="approach-num">01</span>
+        <h3>Learn your workflow</h3>
+        <p>I sit with your team and map the real process: the workarounds, the manual steps, the things that take longer than they should.</p>
+      </div>
+      <div class="approach-item">
+        <span class="approach-num">02</span>
+        <h3>Prototype in days</h3>
+        <p>A working version of the tool in days, not a proposal document in weeks. You see your workflow as working software and we refine from there.</p>
+      </div>
+      <div class="approach-item">
+        <span class="approach-num">03</span>
+        <h3>AI where it helps, code where it's reliable</h3>
+        <p>I use AI where it genuinely solves a problem, and conventional code where reliability and compliance matter more. The right tool for the job.</p>
+      </div>
+      <div class="approach-item">
+        <span class="approach-num">04</span>
+        <h3>Delivered production-ready</h3>
+        <p>Not a demo. A tool your team uses daily. Secure, reliable, and designed to look professional in front of your clients. Fixed-price milestones.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Work -->
+<section id="work">
+  <div class="container">
+    <div class="section-label reveal">Selected Work</div>
+    <h2 class="section-title reveal">Bespoke Tools, Real Problems</h2>
+    <p class="section-desc reveal">Each of these was built from scratch around a specific person's or team's workflow. Not configured from a platform or adapted from a template.</p>
+
+    <div class="case-grid">
+
+      <!-- MindPlan -->
+      <div class="case-card reveal">
+        <div class="case-header">
+          <span class="case-badge badge-live">Live · Board Demo March 17</span>
+          <span class="case-client">Nexia Australia · Financial Planning</span>
+        </div>
+        <h3 class="case-title">MindPlan: Financial Structure Visualisation &amp; Projections</h3>
+        <p class="case-desc">Visual maps are a critical tool for financial planners. They help explain where a client stands and get everyone on the same page. But putting them together using existing software was a painful manual process, taking hours for each client. I built a tool that takes an existing data export and automatically generates an interactive mind map of the client's full financial picture (entities, assets, liabilities, risk flags) in seconds. I then added a projection engine that models income and asset growth over 20+ years.</p>
+        <div class="case-outcomes">
+          <div class="outcome">
+            <div class="outcome-val">100%</div>
+            <div class="outcome-label">Parse success across 83+ client files</div>
+          </div>
+          <div class="outcome">
+            <div class="outcome-val">Hours → Seconds</div>
+            <div class="outcome-label">Manual diagram creation eliminated</div>
+          </div>
+          <div class="outcome">
+            <div class="outcome-val">Fully Local</div>
+            <div class="outcome-label">No client data leaves the machine</div>
+          </div>
+        </div>
+        <p class="case-what">The tool parses the exact file format the planner already exports from their existing software. It understands trusts, companies, SMSFs, personal assets, liabilities, and family structures specific to Australian financial planning. Compliance was a core requirement, so all processing happens locally with no data sent to external services. The same approach can be applied to other data sources the firm already uses, including accounting exports and client presentation workflows.</p>
+      </div>
+
+      <!-- Service Seeking -->
+      <div class="case-card reveal">
+        <div class="case-header">
+          <span class="case-badge badge-live">Live · 18+ months</span>
+          <span class="case-client">Service Seeking · Services Marketplace</span>
+        </div>
+        <h3 class="case-title">AI Concierge &amp; Intelligent Trade Matching</h3>
+        <p class="case-desc">Service Seeking connects customers with tradespeople, but their existing system produced low-quality leads. Customers filled out a basic form, and jobs went to whoever responded fastest rather than the best match. I built an AI concierge that has a proper conversation with the customer to understand the job, then intelligently matches and ranks trades by quality, proximity, and fit.</p>
+        <div class="case-outcomes">
+          <div class="outcome">
+            <div class="outcome-val">3 Phases</div>
+            <div class="outcome-label">Proof of Concept → Pilot → Full Integration</div>
+          </div>
+          <div class="outcome">
+            <div class="outcome-val">94+</div>
+            <div class="outcome-label">Trade categories with custom knowledge</div>
+          </div>
+          <div class="outcome">
+            <div class="outcome-val">End-to-End</div>
+            <div class="outcome-label">Enquiry through to hire, fully automated</div>
+          </div>
+        </div>
+        <p class="case-what">The system handles the full journey: conversational job scoping, photo analysis, pricing estimates, trade outreach via WhatsApp, availability confirmation, and CRM tracking. What started as a painting pilot is now expanding across the full Service Seeking platform.</p>
+      </div>
+
+      <!-- Mark Wilkinson Music -->
+      <div class="case-card reveal">
+        <div class="case-header">
+          <span class="case-badge badge-live">Live</span>
+          <span class="case-client">Independent Musician</span>
+        </div>
+        <h3 class="case-title">AI-Powered Grant Application Tool</h3>
+        <p class="case-desc">Grant applications are high-value but painfully complex. Dozens of fields across multiple pages, strict word limits, clunky portals, and the same career history rewritten from scratch every time. I built a tool that reads the entire form, classifies every question, and reframes them into a simple step-by-step workflow. Fields the system can answer from the applicant's pre-loaded profile are auto-filled; fields that need human input are surfaced clearly with guided prompts. What used to take hours becomes a focused 15-minute review.</p>
+        <div class="case-outcomes">
+          <div class="outcome">
+            <div class="outcome-val">12</div>
+            <div class="outcome-label">Grant programs with tailored AI drafts</div>
+          </div>
+          <div class="outcome">
+            <div class="outcome-val">Hours → Minutes</div>
+            <div class="outcome-label">Per application</div>
+          </div>
+          <div class="outcome">
+            <div class="outcome-val">Pre-Loaded</div>
+            <div class="outcome-label">Full career profile &amp; discography</div>
+          </div>
+        </div>
+        <p class="case-what">The principle here extends well beyond music grants. Any process where professionals repeatedly fill in complex forms using the same underlying information (compliance filings, regulatory submissions, annual returns, audit questionnaires) is a candidate for the same approach. The tool understands both the applicant's profile and the form's requirements, and bridges the two. For an accounting or advisory firm, the same architecture could turn hours of repetitive compliance work into a guided, pre-filled workflow.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="container">
+    <div class="cta-card reveal">
+      <img src="headshot.jpg" alt="Tony Wall" style="width:100px;height:100px;border-radius:50%;object-fit:cover;object-position:center top;margin:0 auto 24px;display:block;border:2px solid rgba(0,200,151,0.3);box-shadow:0 0 20px rgba(0,200,151,0.1);">
+      <div class="section-label">Let's Talk</div>
+      <h2 class="cta-title">What process is costing your team the most time?</h2>
+      <p class="cta-desc">Tell me about the manual step, the repetitive task, the workaround that's become part of the routine. I'll tell you what a purpose-built tool would look like, and how quickly it could be ready.</p>
+      <a href="mailto:tonyjwwall@gmail.com" class="btn-primary">Get In Touch →</a>
+      <div class="cta-contact">
+        <div class="cta-contact-item"><span>✉</span> tonyjwwall@gmail.com</div>
+        <div class="cta-contact-item"><span>☎</span> 0425 328 015</div>
+        <div class="cta-contact-item"><span>◉</span> Sydney, Australia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="container">© 2026 Tony Wall. All rights reserved.</div></footer>
+
+<script>
+const canvas=document.getElementById('stars-canvas');const ctx=canvas.getContext('2d');let stars=[];
+function initStars(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;stars=[];const c=Math.floor((canvas.width*canvas.height)/5000);for(let i=0;i<c;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*1.3+0.3,opacity:Math.random()*0.5+0.1,ts:Math.random()*0.02+0.005,to:Math.random()*Math.PI*2})}}
+function drawStars(t){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{const f=Math.sin(t*s.ts+s.to)*0.3+0.7;ctx.beginPath();ctx.arc(s.x,s.y,s.size,0,Math.PI*2);ctx.fillStyle=`rgba(200,210,230,${s.opacity*f})`;ctx.fill()});requestAnimationFrame(drawStars)}
+initStars();requestAnimationFrame(drawStars);window.addEventListener('resize',initStars);
+const reveals=document.querySelectorAll('.reveal');const obs=new IntersectionObserver(e=>{e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>en.target.classList.add('visible'),i*80);obs.unobserve(en.target)}})},{threshold:0.1});reveals.forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>{document.querySelector('nav').style.background=window.scrollY>50?'rgba(6,6,18,0.95)':'rgba(6,6,18,0.8)'});
+</script>
+</body>
+</html>

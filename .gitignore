@@ -1,0 +1,9 @@
+node_modules/
+venv/
+__pycache__/
+.DS_Store
+server.py
+run_mcp.sh
+tony-wall-portfolio-clean.html
+Tony Headshot (1).jpg
+Tax/
